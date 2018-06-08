@@ -41,7 +41,9 @@ namespace Osu_MpVs_Auto
                         roomname = Console.ReadLine();
                         ircSetting.Send("!mp make "+roomname,"#lobby");
                         Console.WriteLine("已经创建房间：输入指令.help 即可查看本地客户端命令与Mp房间可用指令");
-                        ircSetting.inviteRome();
+                        string username;
+                        username = Console.ReadLine();
+                        ircSetting.inviteRome(username);
                         while (true)
                         {
                             command = Console.ReadLine();
@@ -51,6 +53,12 @@ namespace Osu_MpVs_Auto
                                     break;
                                 default:
                                     break;
+                                  
+                            }
+                            if (command == "exit")
+                            {
+                                ircSetting.exit();
+                                break;
                             }
                         }
 

@@ -36,10 +36,13 @@ namespace Osu_MpVs_Auto
                 msg = a[4];
                 a = msg.Split(' ');
                 msg = a[0];
+                Console.WriteLine("房间号为："+msg);
                 this.Send("!mp unlock", "#mp_" + msg);
                 Console.WriteLine("Room is UnLock");
                 this.Send("!mp password 1234", "#mp_" + msg);
                 Console.WriteLine("Password is set :1234");
+                this.Send("!mp set 2 0 16","#mp_"+msg);
+                Console.WriteLine("已经设置房间为团队对抗模式 积分模式ScoreV1 房间大小：16人");
                 
             }
           
@@ -157,10 +160,14 @@ namespace Osu_MpVs_Auto
             Irc.JoinChanl("#lobby");
             Irc.ThredStart();
         }
-        public void inviteRome()
+        public void inviteRome(string name)
         {
-        
+            this.Send("!mp invite"+name,"#mp_"+msg);
            
+        }
+        public void exit()
+        {
+            this.Send("!mp close","#mp_"+msg);
         }
     }
 }
