@@ -9,6 +9,7 @@ namespace Osu_MpVs_Auto
     class Program
     {
         IrcSettingOrConnect Irc = new IrcSettingOrConnect();
+        MpCommand osucommand = new MpCommand();
         static void Main(string[] args)
         {
             int choose = 3;
@@ -33,9 +34,26 @@ namespace Osu_MpVs_Auto
                         irc.ircsetting();
                         break;
                     case 2:
+                        string roomname,command;
                         IrcSettingOrConnect ircSetting = new IrcSettingOrConnect();
+                        MpCommand osucommand = new MpCommand();
                         Console.WriteLine("输入你要创建的房间名称:");
-                        Console.ReadLine();
+                        roomname = Console.ReadLine();
+                        ircSetting.Send("!mp make "+roomname,"#lobby");
+                        Console.WriteLine("已经创建房间：输入指令.help 即可查看本地客户端命令与Mp房间可用指令");
+                        ircSetting.inviteRome();
+                        while (true)
+                        {
+                            command = Console.ReadLine();
+                            switch (command)
+                            {
+                                case "help":osucommand.help();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
                         break;
                     case 3: break;
                     default: break;

@@ -12,6 +12,8 @@ namespace Osu_MpVs_Auto
         public static IrcClient IRC = new IrcClient();
         private static Thread _ListenThread;
         private string Addres = "irc.ppy.sh";
+        string msg;
+        
         private int Port = 6667;
         public void irc()
         {
@@ -24,6 +26,23 @@ namespace Osu_MpVs_Auto
         private void IRC_OnQueryMessage(object sender, IrcEventArgs e)
         {
            Console.WriteLine("[" + System.DateTime.Now + "私聊" + "]" + e.Data.Nick + ":" + e.Data.Message);
+           msg= e.Data.Message;
+          var a = msg.Split('/');
+            if (a[0]==null)
+            {
+
+            }else
+            {
+                msg = a[4];
+                a = msg.Split(' ');
+                msg = a[0];
+                this.Send("!mp unlock", "#mp_" + msg);
+                Console.WriteLine("Room is UnLock");
+                this.Send("!mp password 1234", "#mp_" + msg);
+                Console.WriteLine("Password is set :1234");
+                
+            }
+          
         }
 
         private void IRC_OnQueryAction(object sender, ActionEventArgs e)
@@ -137,6 +156,11 @@ namespace Osu_MpVs_Auto
             Irc.Login(user, password);
             Irc.JoinChanl("#lobby");
             Irc.ThredStart();
+        }
+        public void inviteRome()
+        {
+        
+           
         }
     }
 }
