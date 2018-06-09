@@ -13,6 +13,7 @@ namespace Osu_MpVs_Auto
         private static Thread _ListenThread;
         private string Addres = "irc.ppy.sh";
         string msg;
+        int matchroom;
         
         private int Port = 6667;
         public void irc()
@@ -30,19 +31,27 @@ namespace Osu_MpVs_Auto
           var a = msg.Split('/');
             if (a[0]==null)
             {
-
+               a = msg.Split(' ');
+                switch (a[0])
+                {
+                    case "房间大小": this.Send("!mp size"+a[1],"#mp_"+matchroom);
+                        break;
+                    default:
+                        break;
+                }
             }else
             {
                 msg = a[4];
                 a = msg.Split(' ');
-                msg = a[0];
-                Console.WriteLine("房间号为："+msg);
-                this.Send("!mp unlock", "#mp_" + msg);
+                matchroom = Convert.ToInt32( a[0]);
+                Console.WriteLine("房间号为："+matchroom);
+                this.Send("!mp unlock", "#mp_" + matchroom);
                 Console.WriteLine("Room is UnLock");
-                this.Send("!mp password 1234", "#mp_" + msg);
+                this.Send("!mp password 1234", "#mp_" + matchroom);
                 Console.WriteLine("Password is set :1234");
-                this.Send("!mp set 2 0 16","#mp_"+msg);
+                this.Send("!mp set 2 0 16","#mp_"+matchroom);
                 Console.WriteLine("已经设置房间为团队对抗模式 积分模式ScoreV1 房间大小：16人");
+               
                 
             }
           
@@ -56,6 +65,16 @@ namespace Osu_MpVs_Auto
         private void IRC_OnChannelMessage(object sender, IrcEventArgs e)
         {
             Console.WriteLine("[" + System.DateTime.Now + e.Data.Channel + "]" + e.Data.Nick + ":" + e.Data.Message);
+            msg = e.Data.Message;
+            var a = msg.Split(' ');
+            switch (a[0])
+            {
+                case "房间大小":
+                    this.Send("!mp size " + a[1], "#mp_" + matchroom);
+                    break;
+                default:
+                    break;
+            }
         }
         public bool Connect()
         {   //服务器连接
