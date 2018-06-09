@@ -181,7 +181,7 @@ namespace Osu_MpVs_Auto
         }
         public void inviteRome(string name)
         {
-            this.Send("!mp invite"+name,"#mp_"+msg);
+            this.Send("!mp invite "+name,"#mp_"+msg);
            
         }
         public void exit()
